@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/konvajs/konva/2.1.8/konva.min.js"></script>
+  <meta charset="utf-8">
+  <title>Konva Rect Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color:#bdfc0fc9;
+        }
+        #container {
+          margin: 0 auto;
+          background-color: white;
+          border : 1px solid #e74d05; 
+          height: 640px;
+           width: 640px;
+        }
+    </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+
+    
+// -------------------- Create the chess board --------------------
+    var stage = new Konva.Stage({
+      container: 'container',
+      width: width,
+      height: height
+    });
+    var layer = new Konva.Layer();
+    for (let i = 0; i <4 ; i++)
+    { 
+      for (let j = 0; j <4 ; j++)
+      { 
+        var rect1 = new Konva.Rect({
+          x: i*160 ,
+          y: j*160 ,
+          width: 80,
+          height: 80,
+          fill: 'black'
+        });
+        var rect2 = new Konva.Rect({
+          x: i*160 + 80 ,
+          y: j*160 + 80,
+          width: 80,
+          height: 80,
+          fill: 'black'
+        });
+
+        // add the shape to the layer
+        layer.add(rect1);
+        layer.add(rect2);
+        // add the layer to the stage
+        stage.add(layer);
+      }
+    }
+//-----------------------------------------------------------------
+
+// ---------------------Create the chess pieces -------------------
+    // var stage2 = new Konva.Stage({
+    //   container: 'container',
+    //   width: width,
+    //   height: height,
+    //   draggable: true
+    // });
+    // var layer2 = new Konva.Layer();
+    var imgTest = new Image();
+    var imgTest2 = new Image();
+    imgTest2.src = 'chess_pieces/bk.svg';
+    imgTest.src = 'chess_pieces/wk.svg';
+    imgTest.onload = function() {
+        var piece = new Konva.Image({
+          x: 160,
+          y: 160,
+          image: imgTest,
+          width: 80,
+          height: 80,
+          draggable: true
+        });
+        // add the shape to the layer
+        layer.add(piece);
+        // add the layer to the stage
+        stage.add(layer);
+    };
+    imgTest2.onload = function() {
+        var piece2 = new Konva.Image({
+          x: 320,
+          y: 160,
+          image: imgTest2,
+          width: 80,
+          height: 80,
+          draggable: true
+        });
+        
+        piece2.on('mouseout', function() {
+          piece2.x = Math.floor(0.5+(event.clientX-240)/80)*80;
+          piece2.y = Math.floor(0.5+event.clientY/80)*80;
+
+          console.log(Math.floor(0.5+(event.clientX-240)/80)*80);
+          layer.add(piece2);
+          stage.add(layer);
+        });
+        // add the shape to the layer
+        layer.add(piece2);
+        // add the layer to the stage
+        stage.add(layer);
+    };
+    var initPieces = [
+      {
+        name : 'WhiteKing',
+        src : 'chess_pieces/wk.svg',
+        x : 3,
+        y : 7
+      }
+    ];
+
+
+//-----------------------------------------------------------------
+  </script>
+
+</body>
+</html>
