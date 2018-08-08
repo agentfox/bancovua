@@ -24,9 +24,94 @@
         var xValue = 0;
         var yValue = 0;
 
-        var canvas, ctx
+        var canvas, ctx;
+        var initState = {
+                vuaT : {
+                    source : 'trang/Chess_klt45.svg',
+                    x : 300,
+                    y : 700
+                },
+                phaoTT : {
+                    source : 'trang/Chess_blt45.svg',
+                    x : 200,
+                    y : 700
+                },
+                nguaTT : {
+                    source : 'trang/Chess_nlt45.svg',
+                    x : 100,
+                    y : 700
+                },
+                xeTT : {
+                    source : 'trang/Chess_rlt45.svg',
+                    x : 0,
+                    y : 700
+                },
+                hauT : {
+                    source : 'trang/Chess_qlt45.svg',
+                    x : 400,
+                    y : 700
+                },
+                phaoTP : {
+                    source : 'trang/Chess_blt45.svg',
+                    x : 500,
+                    y : 700
+                },
+                nguaTP : {
+                    source : 'trang/Chess_nlt45.svg',
+                    x : 600,
+                    y : 700
+                },
+                xeTP : {
+                    source : 'trang/Chess_rlt45.svg',
+                    x : 700,
+                    y : 700
+                },
 
-        window.onload
+                
+                vuaD : {
+                    source : 'den/Chess_kdt45.svg',
+                    x : 300,
+                    y : 0
+                },
+                phaoDT : {
+                    source : 'den/Chess_bdt45.svg',
+                    x : 200,
+                    y : 0
+                },
+                nguaDT : {
+                    source : 'den/Chess_ndt45.svg',
+                    x : 100,
+                    y : 0
+                },
+                xeDT : {
+                    source : 'den/Chess_rdt45.svg',
+                    x : 0,
+                    y : 0
+                },
+                hauD : {
+                    source : 'den/Chess_qdt45.svg',
+                    x : 400,
+                    y : 0
+                },
+                phaoDP : {
+                    source : 'den/Chess_bdt45.svg',
+                    x : 500,
+                    y : 0
+                },
+                nguaDP : {
+                    source : 'den/Chess_ndt45.svg',
+                    x : 600,
+                    y : 0
+                },
+                xeDP : {
+                    source : 'den/Chess_rdt45.svg',
+                    x : 700,
+                    y : 0
+                }
+
+            }    
+
+        window.onload 
             canvas = document.getElementById("chessBoard");
             ctx = canvas.getContext("2d");
             SQUARE_SIZE = canvas.height / NUMBER_OF_ROWS;
@@ -35,7 +120,25 @@
             console.log("Size of each square = " + SQUARE_SIZE +"px");
 
             drawBoard(canvas, NUMBER_OF_ROWS, NUMBER_OF_COLS);
+            
+            for (let obj in initState) {
+                console.log();
+                
+                make_base(obj.source,obj.x,obj.y);
+            }
+            
+   
 
+        function make_base(src,x,y)
+        {   
+             x += 25
+             y += 25
+            let base_image = new Image();
+            base_image.src = src;
+            base_image.onload = function(){
+            ctx.drawImage(base_image, x, y);
+        }
+        }
 
         function drawBoard(can, nRow, nCol) {
             var ctx = can.getContext("2d");
