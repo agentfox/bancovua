@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <div style="text-align: center; ">
+        <canvas style="border : 1px solid black;" id='chessBoard' width =800 height=800>
+        
+        </canvas>
+    </div>
+    
+    <script>
+        var SQUARE_SIZE;
+        const NUMBER_OF_ROWS = 8;
+        const NUMBER_OF_COLS = 8;
+        var NUMBER_OF_SQUARES;
+
+        var xValue = 0;
+        var yValue = 0;
+
+        var canvas, ctx
+
+        window.onload
+            canvas = document.getElementById("chessBoard");
+            ctx = canvas.getContext("2d");
+            SQUARE_SIZE = canvas.height / NUMBER_OF_ROWS;
+            NUMBER_OF_SQUARES = NUMBER_OF_ROWS * NUMBER_OF_COLS;
+
+            console.log("Size of each square = " + SQUARE_SIZE +"px");
+
+            drawBoard(canvas, NUMBER_OF_ROWS, NUMBER_OF_COLS);
+
+
+        function drawBoard(can, nRow, nCol) {
+            var ctx = can.getContext("2d");
+            var w = can.width;
+            var h = can.height;
+
+            nRow = nRow || 8;    // default number of rows
+            nCol = nCol || 8;    // default number of columns
+
+            w /= nCol;            // width of a block
+            h /= nRow;            // height of a block
+
+            for (var i = 0; i < nRow; ++i) {
+                for (var j = 0, col = nCol / 2; j < col; ++j) {
+                    ctx.rect(2 * j * w + (i % 2 ? 0 : w), i * h, w, h);
+                }
+            }
+
+            ctx.fill();
+        }
+    </script>
+</body>
+</html>
