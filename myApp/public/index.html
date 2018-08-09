@@ -1,99 +1,143 @@
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>SocketCluster</title>
-    <link href="//fonts.googleapis.com/css?family=Roboto:100,300" rel="stylesheet" type="text/css">
-    <link rel="icon" type="image/png" href="/favicon.ico">
-    <script type="text/javascript" src="/socketcluster.js"></script>
+<head>
+  <script src="https://cdn.rawgit.com/konvajs/konva/2.1.8/konva.min.js"></script>
+  <meta charset="utf-8">
+  <title>Konva Rect Demo</title>
     <style>
-      html {
-        height: 100%;
-      }
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        color: #666666;
-        display: table;
-        font-weight: 100;
-        font-family: 'Roboto', Helvetica, sans-serif;
-      }
-      a {
-        font-weight: 300;
-        color: #72B963;
-      }
-      .container {
-        display: table-cell;
-        text-align: center;
-        vertical-align: middle;
-      }
-      .content {
-        text-align: center;
-        display: inline-block;
-      }
-
-      .title {
-        font-size: 96px;
-        margin-bottom: 20px;
-      }
-
-      .text {
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-      .small {
-        font-size: 18px;
-      }
-
-      .github-button {
-        padding-top: 10px;
-      }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color:#e0e0e0c9;
+        }
+        #container {
+          margin: 0 auto;
+          background-color: white;
+          border : 1px solid black; 
+          height: 640px;
+           width: 640px;
+        }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="content">
-        <div class="title">
-          SocketCluster
-        </div>
-        <div class="text">
-          Design is not just what it looks like and feels like. Design is how it works. &mdash; Steve Jobs
-        </div>
-        <div class="small">
-          <a href="http://socketcluster.io/#!/docs/getting-started">Getting Started</a> <strong>&middot;</strong>
-          <a href="http://socketcluster.io/#!/docs">Documentation</a>
-        </div>
-        <p class="github-button">
-          <iframe src="https://ghbtns.com/github-btn.html?user=socketcluster&repo=socketcluster&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
-        </p>
-      </div>
-    </div>
-    <script type="text/javascript">
-      // Initiate the connection to the server
-      var socket = socketCluster.connect();
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    var width = window.innerWidth;
+    var height = window.innerHeight;
 
-      socket.on('error', function (err) {
-        console.error(err);
-      });
+    
+// -------------------- Create the chess board --------------------
+    var stage = new Konva.Stage({
+      container: 'container',
+      width: width,
+      height: height
+    });
+    var layer = new Konva.Layer();
+    for (let i = 0; i <4 ; i++)
+    { 
+      for (let j = 0; j <4 ; j++)
+      { 
+        var rect1 = new Konva.Rect({
+          x: i*160 ,
+          y: j*160 ,
+          width: 80,
+          height: 80,
+          fill: 'gray'
+        });
+        var rect2 = new Konva.Rect({
+          x: i*160 + 80 ,
+          y: j*160 + 80,
+          width: 80,
+          height: 80,
+          fill: 'gray'
+        });
 
-      socket.on('connect', function () {
-        console.log('Socket is connected');
-      });
+        // add the shape to the layer
+        layer.add(rect1);
+        layer.add(rect2);
+        // add the layer to the stage
+        stage.add(layer);
+      }
+    }
+//-----------------------------------------------------------------
 
-      socket.on('random', function (data) {
-        console.log('Received "random" event with data: ' + data.number);
-      });
+// ---------------------Create the chess pieces -------------------
+    var bound = function(pos) { var newY,newX; if(pos.y>0&&pos.y
+    <560) { newY=pos.y }else if(pos.y <=0 ) { newY=0 ; }else { newY=560; } if(pos.x>0&&pos.x
+      <560) { newX=pos.x }else if(pos.x <=0 ) { newX=0 ; }else { newX=560; } return { x: newX, y: newY }; } ;
+      
+    var Pieces = [ { name: 'WhiteKing', src: 'chess_pieces/wk.svg', x: 3, y: 7 }, { name: 'WhiteQueen', src: 'chess_pieces/wq.svg',
+    x: 4, y: 7 }, { name: 'WhiteBishopLeft', src: 'chess_pieces/wb.svg', x: 2, y: 7 }, { name: 'WhiteBishopRight', src: 'chess_pieces/wb.svg',
+    x: 5, y: 7 }, { name: 'WhiteKnightLeft', src: 'chess_pieces/wn.svg', x: 1, y: 7 }, { name: 'WhiteKnightRight', src: 'chess_pieces/wn.svg',
+    x: 6, y: 7 }, { name: 'WhiteRookLeft', src: 'chess_pieces/wr.svg', x: 0, y: 7 }, { name: 'WhiteRookRight', src: 'chess_pieces/wr.svg',
+    x: 7, y: 7 }, { name: 'WhitePawn0', src: 'chess_pieces/wp.svg', x: 0, y: 6 }, { name: 'WhitePawn1', src: 'chess_pieces/wp.svg',
+    x: 1, y: 6 }, { name: 'WhitePawn2', src: 'chess_pieces/wp.svg', x: 2, y: 6 }, { name: 'WhitePawn3', src: 'chess_pieces/wp.svg',
+    x: 3, y: 6 }, { name: 'WhitePawn4', src: 'chess_pieces/wp.svg', x: 4, y: 6 }, { name: 'WhitePawn5', src: 'chess_pieces/wp.svg',
+    x: 5, y: 6 }, { name: 'WhitePawn6', src: 'chess_pieces/wp.svg', x: 6, y: 6 }, { name: 'WhitePawn7', src: 'chess_pieces/wp.svg',
+    x: 7, y: 6 }, { name: 'BlackKing', src: 'chess_pieces/bk.svg', x: 3, y: 0 }, { name: 'BlackQueen', src: 'chess_pieces/bq.svg',
+    x: 4, y: 0 }, { name: 'BlackBishopLeft', src: 'chess_pieces/bb.svg', x: 2, y: 0 }, { name: 'BlackBishopRight', src: 'chess_pieces/bb.svg',
+    x: 5, y: 0 }, { name: 'BlackKnightLeft', src: 'chess_pieces/bn.svg', x: 1, y: 0 }, { name: 'BlackKnightRight', src: 'chess_pieces/bn.svg',
+    x: 6, y: 0 }, { name: 'BlackRookLeft', src: 'chess_pieces/br.svg', x: 0, y: 0 }, { name: 'BlackRookRight', src: 'chess_pieces/br.svg',
+    x: 7, y: 0 }, { name: 'BlackPawn0', src: 'chess_pieces/bp.svg', x: 0, y: 1 }, { name: 'BlackPawn1', src: 'chess_pieces/bp.svg',
+    x: 1, y: 1 }, { name: 'BlackPawn2', src: 'chess_pieces/bp.svg', x: 2, y: 1 }, { name: 'BlackPawn3', src: 'chess_pieces/bp.svg',
+    x: 3, y: 1 }, { name: 'BlackPawn4', src: 'chess_pieces/bp.svg', x: 4, y: 1 }, { name: 'BlackPawn5', src: 'chess_pieces/bp.svg',
+    x: 5, y: 1 }, { name: 'BlackPawn6', src: 'chess_pieces/bp.svg', x: 6, y: 1 }, { name: 'BlackPawn7', src: 'chess_pieces/bp.svg',
+    x: 7, y: 1 } ];
 
-      var sampleChannel = socket.subscribe('sample');
 
-      sampleChannel.on('subscribeFail', function (err) {
-        console.error('Failed to subscribe to the sample channel due to error: ' + err);
-      });
+    
+ for(let i in Pieces) {
+      let imgTest = new Image();
+      console.log(Pieces[i].src);
+      imgTest.src = Pieces[i].src;
+      imgTest.onload = function() {
+      
+          let piece = new Konva.Image({
+            x: Pieces[i].x*80,
+            y: Pieces[i].y*80,
+            image: imgTest,
+            width: 80,
+            height: 80,
+            draggable: true,
+            dragBoundFunc: function(pos) {
+              return bound(pos)
+              }
+          });
+          piece.on('dragend', function() {
+            piece.setPosition({
+              x : Math.floor(0.5+(piece.attrs.x-0)/80)*80,
+              y : Math.floor(0.5+piece.attrs.y/80)*80 
+            })
+            console.log( piece.attrs.x,piece.attrs.y);
+            // add the shape to the layer
+            layer.add(piece);
+            // add the layer to the stage
+            stage.add(layer);
+          });
+          // add the shape to the layer
+          layer.add(piece);
+          // add the layer to the stage
+          stage.add(layer);
+      };
+      
+    } 
+    
+    
+        
+ 
+    
 
-      sampleChannel.watch(function (num) {
-        console.log('Sample channel message:', num);
-      });
-    </script>
-  </body>
+
+//-----------------------------------------------------------------
+  </script>
+
+</body>
 </html>
+
+
+
+ 
+
+
