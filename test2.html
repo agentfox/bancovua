@@ -64,62 +64,65 @@
 //-----------------------------------------------------------------
 
 // ---------------------Create the chess pieces -------------------
-    // var stage2 = new Konva.Stage({
-    //   container: 'container',
-    //   width: width,
-    //   height: height,
-    //   draggable: true
-    // });
-    // var layer2 = new Konva.Layer();
-    var imgTest = new Image();
-    var imgTest2 = new Image();
-    imgTest2.src = 'chess_pieces/bk.svg';
-    imgTest.src = 'chess_pieces/wk.svg';
-    imgTest.onload = function() {
-        var piece = new Konva.Image({
-          x: 160,
-          y: 160,
-          image: imgTest,
-          width: 80,
-          height: 80,
-          draggable: true
-        });
-        // add the shape to the layer
-        layer.add(piece);
-        // add the layer to the stage
-        stage.add(layer);
-    };
-    imgTest2.onload = function() {
-        var piece2 = new Konva.Image({
-          x: 320,
-          y: 160,
-          image: imgTest2,
-          width: 80,
-          height: 80,
-          draggable: true
-        });
-        
-        piece2.on('mouseout', function() {
-          piece2.x = Math.floor(0.5+(event.clientX-240)/80)*80;
-          piece2.y = Math.floor(0.5+event.clientY/80)*80;
-
-          console.log(Math.floor(0.5+(event.clientX-240)/80)*80);
-          layer.add(piece2);
+    var bound = function(pos) { var newY,newX; if(pos.y>0&&pos.y
+    <560) { newY=pos.y }else if(pos.y <=0 ) { newY=0 ; }else { newY=560; } if(pos.x>0&&pos.x
+      <560) { newX=pos.x }else if(pos.x <=0 ) { newX=0 ; }else { newX=560; } return { x: newX, y: newY }; } ;
+      
+    var Pieces = [ { name: 'WhiteKing', src: 'chess_pieces/wk.svg', x: 3, y: 7 }, { name: 'WhiteQueen', src: 'chess_pieces/wq.svg',
+    x: 4, y: 7 }, { name: 'WhiteBishopLeft', src: 'chess_pieces/wb.svg', x: 2, y: 7 }, { name: 'WhiteBishopRight', src: 'chess_pieces/wb.svg',
+    x: 5, y: 7 }, { name: 'WhiteKnightLeft', src: 'chess_pieces/wn.svg', x: 1, y: 7 }, { name: 'WhiteKnightRight', src: 'chess_pieces/wn.svg',
+    x: 6, y: 7 }, { name: 'WhiteRookLeft', src: 'chess_pieces/wr.svg', x: 0, y: 7 }, { name: 'WhiteRookRight', src: 'chess_pieces/wr.svg',
+    x: 7, y: 7 }, { name: 'WhitePawn0', src: 'chess_pieces/wp.svg', x: 0, y: 6 }, { name: 'WhitePawn1', src: 'chess_pieces/wp.svg',
+    x: 1, y: 6 }, { name: 'WhitePawn2', src: 'chess_pieces/wp.svg', x: 2, y: 6 }, { name: 'WhitePawn3', src: 'chess_pieces/wp.svg',
+    x: 3, y: 6 }, { name: 'WhitePawn4', src: 'chess_pieces/wp.svg', x: 4, y: 6 }, { name: 'WhitePawn5', src: 'chess_pieces/wp.svg',
+    x: 5, y: 6 }, { name: 'WhitePawn6', src: 'chess_pieces/wp.svg', x: 6, y: 6 }, { name: 'WhitePawn7', src: 'chess_pieces/wp.svg',
+    x: 7, y: 6 }, { name: 'BlackKing', src: 'chess_pieces/bk.svg', x: 3, y: 0 }, { name: 'BlackQueen', src: 'chess_pieces/bq.svg',
+    x: 4, y: 0 }, { name: 'BlackBishopLeft', src: 'chess_pieces/bb.svg', x: 2, y: 0 }, { name: 'BlackBishopRight', src: 'chess_pieces/bb.svg',
+    x: 5, y: 0 }, { name: 'BlackKnightLeft', src: 'chess_pieces/bn.svg', x: 1, y: 0 }, { name: 'BlackKnightRight', src: 'chess_pieces/bn.svg',
+    x: 6, y: 0 }, { name: 'BlackRookLeft', src: 'chess_pieces/br.svg', x: 0, y: 0 }, { name: 'BlackRookRight', src: 'chess_pieces/br.svg',
+    x: 7, y: 0 }, { name: 'BlackPawn0', src: 'chess_pieces/bp.svg', x: 0, y: 1 }, { name: 'BlackPawn1', src: 'chess_pieces/bp.svg',
+    x: 1, y: 1 }, { name: 'BlackPawn2', src: 'chess_pieces/bp.svg', x: 2, y: 1 }, { name: 'BlackPawn3', src: 'chess_pieces/bp.svg',
+    x: 3, y: 1 }, { name: 'BlackPawn4', src: 'chess_pieces/bp.svg', x: 4, y: 1 }, { name: 'BlackPawn5', src: 'chess_pieces/bp.svg',
+    x: 5, y: 1 }, { name: 'BlackPawn6', src: 'chess_pieces/bp.svg', x: 6, y: 1 }, { name: 'BlackPawn7', src: 'chess_pieces/bp.svg',
+    x: 7, y: 1 } ]
+    
+    for(let i=0; i < Pieces.length; i++) {
+      var imgTest = new Image();
+      console.log(Pieces.length);
+      
+      imgTest.src = i.src;
+      imgTest.onload = function() {
+          var piece = new Konva.Image({
+            x: i.x*80,
+            y: i.y*80,
+            image: imgTest,
+            width: 80,
+            height: 80,
+            draggable: true,
+            dragBoundFunc: function(pos) {
+              return bound(pos)
+              }
+          });
+          piece.on('dragend', function() {
+            piece.setPosition({
+              x : Math.floor(0.5+(piece.attrs.x-0)/80)*80,
+              y : Math.floor(0.5+piece.attrs.y/80)*80 
+            })
+            console.log( piece.attrs.x,piece.attrs.y);
+            layer.add(piece);
+            stage.add(layer);
+          });
+          // add the shape to the layer
+          layer.add(piece);
+          // add the layer to the stage
           stage.add(layer);
-        });
-        // add the shape to the layer
-        layer.add(piece2);
-        // add the layer to the stage
-        stage.add(layer);
-    };
-    var initPieces = [
-      {
-        name : 'WhiteKing',
-        src : 'chess_pieces/wk.svg',
-        x : 3,
-        y : 7
-      }
-    ];
+      };
+    }
+    
+    
+        
+ 
+    
 
 
 //-----------------------------------------------------------------
@@ -127,3 +130,9 @@
 
 </body>
 </html>
+
+
+
+ 
+
+
