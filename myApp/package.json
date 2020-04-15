@@ -17,7 +17,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "connect": "3.0.1",
     "express": "4.16.3",
-    "minimist": "1.1.0",
+    "minimist": "1.2.3",
     "morgan": "1.7.0",
     "nodemon": "^1.18.3",
     "sc-errors": "^1.4.0",
